@@ -19,8 +19,9 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'api'], function () use ($router) {
     //list of all books
-    $router->get('books',  ['uses' => 'BookController@index']);
-
+    $router->get('books',  ['uses' => 'BookController@showAllBooks']);
+    //list of all characters
+    $router->get('characters',  ['uses' => 'BookController@showAllCharacters']);
     //get a specific book
     $router->get('books/{id}', ['uses' => 'BookController@find']);
 
@@ -29,4 +30,4 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->delete('books/{id}', ['uses' => 'BookController@delete']);
 
     $router->put('books/{id}', ['uses' => 'BookController@update']);
-  });
+});
