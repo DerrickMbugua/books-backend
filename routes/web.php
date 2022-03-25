@@ -18,14 +18,24 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
+
     //list of all books
     $router->get('books',  ['uses' => 'BookController@showAllBooks']);
     //list of all characters
-    $router->get('characters',  ['uses' => 'BookController@showAllCharacters']);
-    //get a specific book
-    $router->get('books/{id}', ['uses' => 'BookController@find']);
+    $router->get('characters',  ['uses' => 'CharacterController@index']);
+    //get a specific book by id
+    $router->get('books/{id}', ['uses' => 'BookController@show']);
+    //get a specific character
+    $router->get('characters/{id}', ['uses' => 'BookController@findCharacter']);
+    //get comments of a book
+    $router->get('books/{id}/comments', ['uses' => 'BookController@showBookComment']);
+    //add comments of a book
+    $router->post('books/{id}/comments', ['uses' => 'BookController@addComment']);
+    //get a list of characters of a book
+    $router->get('books/{id}/characters', ['uses' => 'BookController@showBookCharacter']);
 
-    $router->post('books', ['uses' => 'BookController@create']);
+    //save book names and authors from API to DB
+    $router->post('books', ['uses' => 'BookController@syncApiData']);
 
     $router->delete('books/{id}', ['uses' => 'BookController@delete']);
 
