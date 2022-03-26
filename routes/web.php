@@ -19,25 +19,45 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'api'], function () use ($router) {
 
-    //list of all books
-    $router->get('books',  ['uses' => 'BookController@showAllBooks']);
-    //list of all characters
-    $router->get('characters',  ['uses' => 'CharacterController@index']);
+    //book crud operations
+    //list of all books together with authors and comment count
+    $router->get('books',  ['uses' => 'BookController@index']);
     //get a specific book by id
     $router->get('books/{id}', ['uses' => 'BookController@show']);
-    //get a specific character
-    $router->get('characters/{id}', ['uses' => 'BookController@findCharacter']);
+    //create a book
+    $router->post('books',  ['uses' => 'BookController@create']);
+    //update a book
+    $router->put('books/{id}', ['uses' => 'BookController@update']);
+    //delete a book
+    $router->delete('books/{id}', ['uses' => 'BookController@delete']);
+    //get a list of characters of a book
+    $router->get('books/{id}/characters', ['uses' => 'BookController@showBookCharacter']);
     //get comments of a book
     $router->get('books/{id}/comments', ['uses' => 'BookController@showBookComment']);
     //add comments of a book
     $router->post('books/{id}/comments', ['uses' => 'BookController@addComment']);
-    //get a list of characters of a book
-    $router->get('books/{id}/characters', ['uses' => 'BookController@showBookCharacter']);
 
-    //save book names and authors from API to DB
-    $router->post('books', ['uses' => 'BookController@syncApiData']);
+    //character crud operations
+    //list of all characters
+    $router->get('characters',  ['uses' => 'CharacterController@index']);
+    //get a specific character
+    $router->get('characters/{id}', ['uses' => 'CharacterController@show']);
+    //create a character
+    $router->post('characters',  ['uses' => 'CharacterController@create']);
+    //update a character
+    $router->put('characters/{id}',  ['uses' => 'CharacterController@update']);
+    //delete a character
+    $router->delete('characters/{id}', ['uses' => 'CharacterController@delete']);
 
-    $router->delete('books/{id}', ['uses' => 'BookController@delete']);
-
-    $router->put('books/{id}', ['uses' => 'BookController@update']);
+    //comment crud operations
+    //list of all comments
+    $router->get('comments',  ['uses' => 'CommentController@index']);
+    //get a specific comment
+    $router->get('comments/{id}', ['uses' => 'CommentController@show']);
+    //create a comment
+    $router->post('comments',  ['uses' => 'CommentController@create']);
+    //update a comment
+    $router->put('comments/{id}',  ['uses' => 'CommentController@update']);
+    //delete a comment
+    $router->delete('comments/{id}', ['uses' => 'CommentController@delete']);
 });

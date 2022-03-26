@@ -3,52 +3,128 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use App\Models\Author;
-use GuzzleHttp\Client;
-use App\Models\Comment;
 use App\Models\Character;
-use App\Models\BookAuthor;
 use Illuminate\Http\Request;
-use App\Models\BookCharacter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
 class BookController extends Controller
 {
+
     //list of book names along with their authors and comment count
-    public function showAllBooks()
+    public function index()
     {
-        $books = Book::with('authors')->withCount('comments')->get();
-        return $books;
+
+        try {
+            $books = Book::with('authors')->withCount('comments')->get();
+            return response()->json($books);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'error' => [
+                    'description' => $e->getMessage()
+                ]
+            ], 500);
+        }
     }
 
     //list of all books
-    public function index()
+    public function showAllBooks()
     {
-        // $books = DB::table('books')
-        //     ->join('comments', 'books.id', '=', 'comments.book_id')
-        //     ->select('books.name', 'books.author')
-        //     ->selectRaw('count(comments.book_id) as comments_count')
-        //     ->groupBy('books.name', 'books.author')
-        //     ->get();
 
-        // return $books;
-        $books = Book::all();
-        return $books;
+        try {
+
+            $books = Book::all();
+            return response()->json($books);
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'error' => [
+                    'description' => $e->getMessage()
+                ]
+            ], 500);
+        }
     }
 
     //find a specific book
     public function show($id)
     {
-        $book = Book::where('id', $id)->get();
-        return $book;
+
+        try {
+
+            $book = Book::find($id);
+            return response()->json($book);
+
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'error' => [
+                    'description' => $e->getMessage()
+                ]
+            ], 500);
+        }
+    }
+
+    //create a book
+    public function create(Request $request)
+    {
+
+        try {
+
+            $book = new Book();
+            $book->name = $request->get('name');
+            $book->save();
+            return response()->json($book);
+
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'error' => [
+                    'description' => $e->getMessage()
+                ]
+            ], 500);
+        }
     }
 
     //update a book
     public function update(Request $request, $id)
     {
-        $book = new Book();
+
+        try {
+
+            $book = Book::find($id);
+            $book->name = $request->get('name');
+            $book->save();
+            return response()->json($book);
+
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'error' => [
+                    'description' => $e->getMessage()
+                ]
+            ], 500);
+        }
+    }
+
+    //delete a book
+    public function delete($id)
+    {
+
+        try {
+
+            $book = Book::find($id);
+            $book->delete();
+            return response()->json("Book deleted successfully");
+
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'error' => [
+                    'description' => $e->getMessage()
+                ]
+            ], 500);
+        }
     }
 
     //show book comments
