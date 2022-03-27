@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Character;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -128,9 +129,9 @@ class BookController extends Controller
     }
 
     //show book comments
-    public function showBookComment()
+    public function showBookComment($id)
     {
-        $bookComments = Book::with('comments')->get();
+        $bookComments = Comment::where('book_id', $id)->get();
         return $bookComments;
     }
 
