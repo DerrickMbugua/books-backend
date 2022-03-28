@@ -60,4 +60,16 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->put('comments/{id}',  ['uses' => 'CommentController@update']);
     //delete a comment
     $router->delete('comments/{id}', ['uses' => 'CommentController@delete']);
+
+     //author crud operations
+    //list of all authors
+    $router->get('authors',  ['uses' => 'AuthorController@index']);
+    //get a specific author
+    $router->get('authors/{id}', ['uses' => 'AuthorController@show']);
+    //create a author
+    $router->post('authors',  ['uses' => 'AuthorController@create']);
+    //update a author
+    $router->put('authors/{id}',  ['uses' => 'AuthorController@update']);
+    //delete a comment
+    $router->delete('authors/{id}', ['uses' => 'AuthorController@delete']);
 });
